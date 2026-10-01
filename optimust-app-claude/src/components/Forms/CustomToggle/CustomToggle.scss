@@ -1,0 +1,17 @@
+/* Option 1 — data-p-highlight (same as checkbox) */
+.p-inputswitch[data-p-highlight="true"] .p-inputswitch-slider {
+  background: var(--background-secondary) !important;
+  border-color: var(--background-secondary) !important;
+}
+
+/* Option 2 — PrimeReact adds p-inputswitch-checked class */
+.p-inputswitch-checked .p-inputswitch-slider {
+  background: var(--background-secondary) !important;
+  border-color: var(--background-secondary) !important;
+}
+
+/* Option 3 — aria attribute */
+.p-inputswitch[aria-checked="true"] .p-inputswitch-slider {
+  background: var(--background-secondary) !important;
+  border-color: var(--background-secondary) !important;
+}

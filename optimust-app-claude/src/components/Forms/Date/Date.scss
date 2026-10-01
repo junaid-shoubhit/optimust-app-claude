@@ -1,0 +1,92 @@
+.filter-input {
+  .p-inputtext {
+    font-size: 11px;
+    padding: 0.25rem 0.75rem;
+    height: 30px !important;
+
+    &::placeholder {
+      font-size: 12px;
+    }
+  }
+
+  .p-button.p-button-icon-only {
+    padding: 0px;
+    background: #999999;
+    border: 1px solid #999999;
+    width: 3rem;
+  }
+}
+
+.p-calendar {
+  .p-inputtext {
+    font-size: 12px;
+    padding: 0.25rem 0.75rem;
+    height: 39px;
+
+    &::placeholder {
+      font-size: 12px;
+    }
+  }
+
+  .p-button.p-button-icon-only {
+    padding: 0px;
+    background: #999999;
+    border: 1px solid #999999;
+    width: 2.5rem;
+  }
+}
+
+.p-datepicker {
+  .p-datepicker-header {
+    padding: 0;
+
+    .p-datepicker-title {
+      font-size: 12px !important;
+    }
+    .p-datepicker-prev {
+      width: 1rem;
+      height: 1rem;
+    }
+    .p-datepicker-next {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+
+  table {
+    margin: 0px;
+
+    th {
+      padding: 0px;
+    }
+
+    td {
+      padding: 0px;
+
+      > span {
+        margin: 0px;
+      }
+    }
+  }
+
+  .p-datepicker-title .p-datepicker-month {
+    padding: 0px;
+  }
+  .p-datepicker-year {
+    padding: 0px;
+  }
+
+  p-datepicker-calendar-container {
+  }
+
+  .p-timepicker {
+    padding: 0 !important;
+    button {
+      width: 1rem;
+      height: 1rem;
+    }
+    span {
+      font-size: 14px;
+    }
+  }
+}

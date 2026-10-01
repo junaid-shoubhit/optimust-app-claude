@@ -1,0 +1,185 @@
+.login-button {
+  font-size: 14px;
+  padding: 0.4rem 0.7rem !important;
+  border: none;
+  background: var(--background-secondary) !important;
+  border-radius: 6px;
+  &:focus {
+    box-shadow: none;
+  }
+  span {
+    font-size: 16px;
+  }
+}
+
+.primary {
+  color: var(--text-button);
+  background: var(--foreground);
+  border: 1px solid var(--border-inverse);
+  padding: 0.4rem 0.7rem !important;
+}
+
+.primary:hover {
+  // background: #8FB0E6;
+  border: 1px solid var(--border-secondary);
+  color: var(--text-secondary);
+}
+
+.primary:focus {
+  box-shadow: none;
+  border: 1px solid var(--border-secondary);
+  color: var(--text-secondary);
+}
+
+/* Label text */
+.primary .p-button-label {
+  font-size: 12px;
+}
+
+/* Icon */
+.primary .p-button-icon {
+  font-size: 13px;
+}
+
+.saveBtn {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 0.7rem !important; // py-2 px-3 => 0.5rem top/bottom, 0.75rem left/right
+  border-radius: 0.5rem; // rounded-lg = 0.5rem
+  border: none;
+  color: var(--foreground);
+  background-color: var(--background-secondary);
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.iconSaveBtn {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.2rem 0.4rem !important; // py-2 px-3 => 0.5rem top/bottom, 0.75rem left/right
+  border-radius: 0.5rem; // rounded-lg = 0.5rem
+  border: none;
+  color: var(--foreground);
+  background-color: var(--background-secondary);
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.9;
+  }
+}
+.iconBtn {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  width: fit-content;
+  padding: 0.2rem 0.4rem !important; // py-2 px-3 => 0.5rem top/bottom, 0.75rem left/right
+  border-radius: 0.5rem; // rounded-lg = 0.5rem
+  color: var(--text-muted);
+  border: 1px solid var(--text-muted);
+  background-color: var(--foreground);
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.9;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-secondary);
+  }
+  &:focus {
+    box-shadow: none;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-secondary);
+  }
+}
+
+.successBtn {
+  // background-color:  #26c761 !important;
+  color: #26c761 !important;
+  border: #26c761;
+}
+
+.outlineBtn {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 0.7rem !important; // py-2 px-3 => 0.5rem top/bottom, 0.75rem left/right
+  border-radius: 0.5rem; // rounded-lg = 0.5rem
+  color: var(--text-muted);
+  border: 1px solid var(--text-muted);
+  background-color: var(--foreground);
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.9;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-secondary);
+  }
+  &:focus {
+    box-shadow: none;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-secondary);
+  }
+}
+
+.cancelBtn {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 0.7rem !important; // py-2 px-3 => 0.5rem top/bottom, 0.75rem left/right
+  border-radius: 0.5rem; // rounded-lg = 0.5rem
+  font-size: 0.8rem; // text-sm
+  background-color: #a30d11;
+  border: none;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.p-button .p-button-icon-left {
+  margin-right: 0.5rem !important;
+}
+.quickFilterBtn {
+  border: 1px solid var(--color-bgFive);
+  background: transparent;
+  color: var(--color-bgFive);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+/* Hover is lighter/different from selected */
+.quickFilterBtn:hover {
+  background: color-mix(
+    in srgb,
+    var(--color-bgFive) 12%,
+    transparent
+  );
+  color: var(--color-bgFive);
+}
+
+/* Selected state */
+.quickFilterBtnActive {
+  background: var(--color-bgFive);
+  color: white;
+  border-color: var(--color-bgFive);
+}
+
+/* Don't let hover override selected state */
+.quickFilterBtnActive:hover {
+  background: var(--color-bgFive);
+  color: white;
+}
+
+.quickFilterClose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}

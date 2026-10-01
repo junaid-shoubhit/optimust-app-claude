@@ -1,0 +1,76 @@
+.primary {
+  color: var(--text-button);
+  background: var(--foreground);
+  border: 1px solid var(--border-inverse);
+  padding: 0.4rem 0.7rem !important;
+}
+
+.primary:hover {
+  // background: #8FB0E6;
+  border: 1px solid var(--border-secondary);
+  color: var(--text-secondary);
+}
+
+.primary:focus {
+  box-shadow: none;
+  border: 1px solid var(--border-secondary);
+  color: var(--text-secondary);
+}
+
+/* Label text */
+.primary .p-button-label {
+  font-size: 12px;
+}
+
+/* Icon */
+.primary .p-button-icon {
+  font-size: 13px;
+}
+
+.saveBtn {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 0.7rem !important; // py-2 px-3 => 0.5rem top/bottom, 0.75rem left/right
+  border-radius: 0.5rem; // rounded-lg = 0.5rem
+  border: none;
+  color: var(--foreground);
+  background-color: var(--background-secondary);
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.p-checkbox-sm {
+  background: var(--foreground);
+  color: var(--text-button);
+  text-color: var(--text-button);
+}
+
+// .p-checkbox {
+//   // border: 2px solid red !important;
+// background: var(--foreground);
+//   border: 1px solid var(--border-inverse);
+//   color: var(--foreground);
+
+// }
+/* Unchecked */
+.p-checkbox-box {
+  background: white !important;
+  border: 1px solid var(--background-secondary) !important;
+}
+
+.p-checkbox-box[data-p-highlight="true"] {
+  background: var(--background-secondary) !important;
+  border-color: var(--background-secondary) !important;
+}
+/* Unchecked */
+.p-checkbox-box {
+  background: white !important;
+  border: 1px solid var(--background-secondary) !important;
+}
+
+.p-checkbox-box[data-p-highlight="true"] {
+  background: var(--background-secondary) !important;
+  border-color: var(--background-secondary) !important;
+}

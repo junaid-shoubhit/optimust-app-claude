@@ -1,0 +1,35 @@
+.nav-sidebar {
+  color: var(--text-inverse);
+  background-color: var(--background);
+  width: 72px;
+  z-index: 100;
+  box-shadow: 0 4px 8px 3px rgba(0, 0, 0, 0.15);
+  padding: 8px 0;
+}
+
+/* bg-[linear-gradient(135deg,#5B5FC7_0%,#7C80E0_100%)] */
+.logoGradient{
+  background: linear-gradient(135deg, #5B5FC7 0%, #7C80E0 100%);
+}
+/* .nav-topbar {
+  background-color: var(--color-bgOne);
+  z-index: 101;
+  padding: 0.1rem 1rem;
+  height: 2.625rem;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--color-fontFour);
+} */
+
+.sub-menu {
+  display: flex;
+  position: relative;
+  gap: 12px;
+  z-index: 99;
+  padding: 0px 12px;
+  background-color: var(--foreground);
+  color: var(--color-fontFour) !important;
+  box-shadow: 0px 0px 8px 3px rgba(0, 0, 0, 0.15);
+}

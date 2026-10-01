@@ -1,0 +1,296 @@
+@import "tailwindcss";
+@import "primereact/resources/themes/lara-light-cyan/theme.css";
+@import "primereact/resources/primereact.min.css";
+@import "primeicons/primeicons.css";
+@import "./life-theme.scss";
+
+/* --- THEME CONFIGURATION --- */
+/* .p-menu .p-menuitem>.p-menuitem-content .p-menuitem-link {
+    padding: 0.5rem 0.25rem !important;
+} */
+
+/* === Dynamic Themes === */
+:root[data-theme="light"] {
+  --foreground: #ffffff;
+  --foreground-dark: #1a1f36;
+  /* =====================
+     BACKGROUNDS
+  ===================== */
+  --background-body: #f0f2f7;
+  --background-heading: #fafbfd;
+
+  --background-heading-active: #f7f8ff;
+
+  --background-heading-table: #fffbf0;
+  --background: #1b2438;
+  --background-secondary: #5b5fc7;
+  --background-box: #5b5fc72e;
+  --background-icon-active: #9b9fe4;
+  --background-active: #9b9fe4;
+  --skeleton-bg: #313d5a;
+  --background-hover: #eef0fb;
+
+  --background-table: #f7f8fc;
+  /* --background-white: #ffffff; */
+
+  /* =====================
+     TEXT
+  ===================== */
+  --text-primary: #444746;
+  --text-button: #6b7280;
+  --text-secondary: #5b5fc7;
+  --input-text: #1a1f3680;
+  --text-muted: #8a8a8a;
+  --text-inverse: #8b97b1;
+  --text-inverse-active: #ffffff;
+  /* --text-white: #ffffff; */
+  /* =====================
+     BORDERS 
+   */
+
+  --border-inverse: #8b97b1;
+  /* --border-button: #6B7280; */
+  --border-primary: #00000008;
+  --border-secondary: #5b5fc7;
+  --border-hover: #5b5fc7;
+  --background-table-active: #f0f3ff;
+
+  --color-bgdarkbrown: #92613a;
+  --color-creame: #f2ddb3;
+  --color-black: #000000;
+  --color-textdarkbrown: #582800;
+
+  --color-bgOne: #e9eef6;
+  --color-bgTwo: #d3e3fd;
+  --color-bgThree: #ebf1fb;
+  --color-bgFour: #444746;
+  --color-bgFive: #133876;
+  --color-bgSix: #5c7fb7;
+  --color-bgSeven: #2956a1;
+  --color-bgEight: #aac4ee;
+
+  --color-fontOne: #e9eef6;
+  --color-fontTwo: #d3e3fd;
+  --color-fontThree: #ebf1fb;
+  --color-fontFour: #444746;
+  --color-fontFive: #133876;
+  --color-fontSix: #5c7fb7;
+  --color-fontSeven: #2956a1;
+  --color-fontEight: #aac4ee;
+}
+
+/* OPTIONAL: Global body styling */
+@layer base {
+  body {
+    background-color: var(--background-body);
+    color: var(--color-neutral-900);
+    font-family: "Inter", sans-serif;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+  }
+
+  h2 {
+    color: #2e2e2e;
+  }
+  h3 {
+    color: #2e2e2e;
+    font-size: 1.75rem;
+    font-weight: 600;
+  }
+
+  h6 {
+    color: #2e2e2e;
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  p {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  span {
+    font-size: 0.75rem;
+    font-weight: 400;
+  }
+
+  button {
+    color: #2e2e2e;
+    cursor: pointer;
+  }
+
+  .pi {
+    /* color: var(--color-textdarkbrown); */
+    cursor: pointer;
+  }
+  hr {
+    border: none;
+    height: 0.5px;
+    background-color: var(--border-inverse); /* gray color */
+  }
+}
+
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #9ca3af transparent;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #9ca3af;
+  border-radius: 9999px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #6b7280;
+}
+
+/* Custom scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb, var(--color-neutral-300))
+    var(--scroll-track, var(--color-header-500));
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-thumb, var(--color-header-500));
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: var(--scroll-track, var(--color-header-500));
+}
+
+.ck .ck-powered-by {
+  display: none !important;
+}
+.new-row-highlight {
+  background-color: #e8f5e9 !important;
+  animation: fadeRow 2s ease forwards;
+}
+
+.edit-row-highlight {
+  background-color: #fff7e6 !important; /* light orange */
+}
+
+.deleted-row-highlight {
+  background-color: #fdecea !important;
+}
+
+.ischanged {
+  border: 1px solid #ffc549 !important; /* orange border for changed fields */
+}
+
+@keyframes fadeRow {
+  0% {
+    background-color: #e8f5e9;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.truncate-2-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.truncate-3-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.truncate-1-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+}
+
+/* wrapper */
+.pi-step-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* LEFT PANEL */
+.pi-step-left {
+  transition: all 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+}
+
+/* RIGHT PANEL */
+.pi-step-right {
+  flex: 1;
+  animation: slideInRight 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- STEP STATES ---------- */
+
+/* STEP 1 → full width */
+.step-1 .pi-step-left {
+  width: 100%;
+}
+
+/* STEP 2 → sidebar */
+.step-2 .pi-step-left {
+  width: 200px; /* match your TabSidebar */
+}
+
+/* Hide expand/collapse icon */
+.no-toggle-icon .p-accordion-header-link .p-accordion-toggle-icon {
+  display: none !important;
+}
+
+/* Optional: remove extra spacing caused by icon */
+.no-toggle-icon .p-accordion-header-link {
+  padding-left: 1rem !important;
+}
+
+.custom-confirm .p-dialog-content {
+  padding: 0.5rem !important;
+}
+
+/* ---------- ANIMATIONS ---------- */
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
