@@ -3,10 +3,8 @@ import Sidebar from "./Navbar/Sidebar";
 import "./layout.css";
 import TabMenus from "./Navbar/TabMenus";
 import { Suspense } from "react";
-import {
-  NavigationProvider,
-  useCustomNavigation,
-} from "./Navbar/NavigationContext";
+import NavigationProvider from "./Navbar/NavigationProvider";
+import { useCustomNavigation } from "./Navbar/NavigationContext";
 import { ConfirmPopup } from "primereact/confirmpopup";
 import { ConfirmDialog } from "primereact/confirmdialog";
 
