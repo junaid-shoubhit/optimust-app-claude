@@ -194,7 +194,10 @@ export const useNavigationData = (activeModule) => {
 
     select: selectNavigation,
 
-    placeholderData: (prev) => prev,
+    // No placeholderData: the key changes per module, so "previous data" would be
+    // another module's menus rebuilt under this module's path. That made
+    // TabMenus redirect to a wrong first tab (e.g. /management/dashboard) while
+    // this module's menus were still loading.
 
     staleTime: Infinity, // 10 mins
     gcTime: 1000 * 60 * 30, // 30 mins
@@ -218,8 +221,25 @@ export const useNavigationData = (activeModule) => {
       };
     }
 
+    // Only reuse the last menu while still inside the module it came from.
+    // While navigating to another module, activeModule and its tabs lag behind
+    // the URL for a few renders; falling back then would leak the previous
+    // module's menu (e.g. Dashboard, entityCodeId null) into the new page.
+    const isInsideActiveModule =
+      !modulePath ||
+      location.pathname === modulePath ||
+      location.pathname.startsWith(`${modulePath}/`);
+
+    const getFallbackMenu = () => {
+      const last = lastActiveRef.current;
+
+      return last && isInsideActiveModule && last.moduleId === moduleId
+        ? last.menu
+        : null;
+    };
+
     if (!trieRoot) {
-      return lastActiveRef.current;
+      return getFallbackMenu();
     }
 
     const matchedId = matchTrie(trieRoot, pathnameParts);
@@ -227,12 +247,20 @@ export const useNavigationData = (activeModule) => {
     const matchedMenu = matchedId ? idMap.get(matchedId) : null;
 
     if (matchedMenu) {
-      lastActiveRef.current = matchedMenu;
+      lastActiveRef.current = { moduleId, menu: matchedMenu };
       return matchedMenu;
     }
 
-    return lastActiveRef.current;
-  }, [trieRoot, pathnameParts, idMap, activeModule, location.pathname]);
+    return getFallbackMenu();
+  }, [
+    trieRoot,
+    pathnameParts,
+    idMap,
+    activeModule,
+    location.pathname,
+    modulePath,
+    moduleId,
+  ]);
 
   /* ---------------------------------------------------------------------- */
   /*                               BREADCRUMB                               */

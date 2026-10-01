@@ -121,20 +121,22 @@ const WFTasks = ({ entityId, activeMenu: propActiveMenu }) => {
       activeMenu,
 
       // Table is completely hidden while details are open.
-      enabled: !isDetailsOpen,
+      enabled: !isDetailsOpen || activeMenu?.id,
     });
 
   /* ============================================================
      TABLE QUERY
   ============================================================ */
-
+  console.log("activeMenu?.id", activeMenu?.entityCodeId);
   const { data, isLoading, isError, error } = useDynamicPageQuery({
     config,
     activeMenu,
     appliedFilters,
 
-    // Don't fetch invisible table data on direct refresh.
-    enabled: !isDetailsOpen,
+    // Wait for the WF Tasks menu to resolve; on navigation from another
+    // module the previous menu (without an entityCodeId) is briefly active.
+    enabled:
+      Boolean(activeMenu?.entityCodeId) && (!isDetailsOpen || activeMenu?.id),
   });
 
   const invalidateKeys = useMemo(

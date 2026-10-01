@@ -13,7 +13,12 @@ import { apiRequest } from "../../../services/apiBinding";
 /* -------------------------------------------------------------------------- */
 
 const Dashboard = () => {
-  const { data: reports = [], isLoading: isReportsLoading } = useQuery({
+  const {
+    data: reports = [],
+    isLoading: isReportsLoading,
+    isError: isReportsError,
+    refetch: refetchReports,
+  } = useQuery({
     queryKey: ["report-status-count"],
 
     queryFn: async ({ signal }) => {
@@ -36,14 +41,19 @@ const Dashboard = () => {
   const intakeReports = reports.filter((item) => item.type === "Intake");
 
   return (
-    <div className="min-h-screen p-5">
+    <div className="min-h-screen p-4 md:p-5">
       {/* HEADER */}
       <DashboardHeader />
 
       {/* HERO SECTION */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-5 mb-6">
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-5 mb-5">
         {/* CASE REPORTS */}
-        <CaseStatusCount reports={caseReports} isLoading={isReportsLoading} />
+        <CaseStatusCount
+          reports={caseReports}
+          isLoading={isReportsLoading}
+          isError={isReportsError}
+          onRetry={refetchReports}
+        />
 
         {/* INTAKE REPORTS */}
         <IntakeStatusCount
@@ -53,16 +63,10 @@ const Dashboard = () => {
       </div>
 
       {/* MAIN GRID */}
-      <div className="grid grid-cols-12 gap-5">
-        {/* LEFT */}
-        <div className="col-span-6 flex flex-col gap-5">
-          <EventStatusChart />
-        </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <EventStatusChart />
 
-        {/* RIGHT */}
-        <div className="col-span-6 flex flex-col gap-5">
-          <GetTodayTasksReport />
-        </div>
+        <GetTodayTasksReport />
       </div>
     </div>
   );

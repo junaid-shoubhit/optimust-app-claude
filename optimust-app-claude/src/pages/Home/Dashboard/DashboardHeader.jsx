@@ -1,8 +1,22 @@
-import { Bell, Search, Sparkles } from "lucide-react";
-import React, { useMemo, useState } from "react";
+import { CalendarDays, RotateCw, Sparkles } from "lucide-react";
+import { useMemo } from "react";
+import { useIsFetching, useQueryClient } from "@tanstack/react-query";
+
+/** Query keys owned by the dashboard widgets, refreshed together. */
+const DASHBOARD_QUERY_KEYS = [
+  ["report-status-count"],
+  ["intake-status-count"],
+  ["calendar-events"],
+  ["today-tasks-report"],
+];
+
+const isDashboardQuery = (query) =>
+  DASHBOARD_QUERY_KEYS.some((key) => key[0] === query.queryKey[0]);
 
 const DashboardHeader = () => {
-  const [search, setSearch] = useState("");
+  const queryClient = useQueryClient();
+
+  const isRefreshing = useIsFetching({ predicate: isDashboardQuery }) > 0;
 
   const greeting = useMemo(() => {
     const hour = new Date().getHours();
@@ -13,85 +27,80 @@ const DashboardHeader = () => {
     return "Good Evening";
   }, []);
 
+  const today = useMemo(
+    () =>
+      new Date().toLocaleDateString(undefined, {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      }),
+    [],
+  );
+
   const userName = localStorage.getItem("userName") || "";
 
+  const handleRefresh = () => {
+    queryClient.invalidateQueries({ predicate: isDashboardQuery });
+  };
+
   return (
-    <div className="flex justify-between gap-5 mb-3">
+    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-5">
       <div>
         <div
-          className="flex items-center gap-2 font-semibold"
+          className="flex items-center gap-2 text-sm font-semibold"
           style={{ color: "var(--color-bgSeven)" }}
         >
-          <Sparkles size={18} />
+          <Sparkles size={16} />
           Smart Dashboard
         </div>
 
         <h1
-          className="text-4xl font-black mt-2"
+          className="text-3xl md:text-4xl font-black mt-2"
           style={{ color: "var(--color-fontFour)" }}
         >
-          {greeting}, {userName} 👋
+          {greeting}
+          {userName && `, ${userName}`} 👋
         </h1>
 
         <p
           className="mt-2 text-[15px]"
           style={{ color: "var(--color-fontSix)" }}
         >
-          Manage cases, intake, tasks & team productivity.
+          Here's what's happening with your cases, intake & tasks today.
         </p>
+      </div>
+
+      <div className="flex items-center gap-2 shrink-0">
+        <div
+          className="hidden md:flex items-center gap-2 h-11 px-4 rounded-2xl border bg-white/70 text-sm font-medium"
+          style={{
+            borderColor: "var(--color-bgTwo)",
+            color: "var(--color-fontFour)",
+          }}
+        >
+          <CalendarDays size={16} style={{ color: "var(--color-bgSeven)" }} />
+          {today}
+        </div>
+
+        <button
+          type="button"
+          onClick={handleRefresh}
+          disabled={isRefreshing}
+          aria-label="Refresh dashboard"
+          title="Refresh dashboard"
+          className="h-11 px-4 rounded-2xl text-white text-sm font-semibold flex items-center gap-2 transition hover:brightness-110 disabled:opacity-80 disabled:cursor-wait focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--color-bgSeven)]"
+          style={{
+            background:
+              "linear-gradient(135deg, var(--color-bgFive), var(--color-bgSeven))",
+          }}
+        >
+          <RotateCw size={16} className={isRefreshing ? "animate-spin" : ""} />
+          {isRefreshing ? "Refreshing" : "Refresh"}
+        </button>
       </div>
     </div>
   );
 };
 
 export default DashboardHeader;
-
-// <div className="flex flex-wrap gap-3 items-center">
-//   {/* SEARCH */}
-
-//   <div className="relative">
-//     <Search
-//       size={18}
-//       className="absolute left-4 top-1/2 -translate-y-1/2"
-//       style={{ color: "var(--color-fontSix)" }}
-//     />
-
-//     <input
-//       value={search}
-//       onChange={(e) => setSearch(e.target.value)}
-//       placeholder="Search anything..."
-//       className="h-14 w-[280px] rounded-2xl pl-11 pr-4 outline-none border"
-//       style={{
-//         background: "rgba(255,255,255,0.7)",
-//         borderColor: "var(--color-bgTwo)",
-//       }}
-//     />
-//   </div>
-
-//   {/* BELL */}
-
-//   <button
-//     className="h-14 w-14 rounded-2xl border flex items-center justify-center relative"
-//     style={{
-//       background: "rgba(255,255,255,0.7)",
-//       borderColor: "var(--color-bgTwo)",
-//     }}
-//   >
-//     <Bell size={20} style={{ color: "var(--color-fontFour)" }} />
-
-//     <span className="absolute top-3 right-3 h-2 w-2 rounded-full bg-red-500" />
-//   </button>
-
-//   {/* BUTTON */}
-
-//   {/* <button
-//       className="h-14 px-6 rounded-2xl text-white font-semibold flex items-center gap-2 transition hover:scale-[1.02]"
-//       style={{
-//         background:
-//           "linear-gradient(135deg, var(--color-bgFive), var(--color-bgSeven))",
-//       }}
-//     >
-//       <Plus size={18} />
-//       Create New
-//     </button> */}
-// </div>

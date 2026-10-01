@@ -24,11 +24,11 @@ const SettlementNotesTable = ({ caseId, setVisible }) => {
         apiClient: "optimust",
       });
 
-      return response?.data;
+      return response;
     },
     enabled: !!caseId,
   });
-
+  console.log("data", data);
   const notes = data?.notes || [];
 
   return (
@@ -95,7 +95,7 @@ const SettlementNotesTable = ({ caseId, setVisible }) => {
                     </td>
 
                     <td className="px-4 py-3 border-b border-r border-gray-100 text-gray-700 align-top">
-                      {item.type || "-"}
+                      {item.noteType || "-"}
                     </td>
 
                     <td className="px-4 py-3 border-b border-r border-gray-100 text-gray-700 align-top whitespace-nowrap">
@@ -145,18 +145,16 @@ const ShowNoteBtn = ({ caseId }) => {
 
   return (
     <>
-
-
-       <CustomButton
-                iconPos="left"
-                label="Notes"
-                icon="pi pi-file"
-                className="outlineBtn"
-                aria-label="Add"
-                   onClick={()=>{
-            setVisible(true)
+      <CustomButton
+        iconPos="left"
+        label="Notes"
+        icon="pi pi-file"
+        className="outlineBtn"
+        aria-label="Add"
+        onClick={() => {
+          setVisible(true);
         }}
-              />
+      />
 
       {visible && (
         <StepModal
