@@ -1,213 +1,149 @@
-import { useMemo, useRef, createRef } from "react";
+import { createRef, useCallback, useMemo, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
 import { Button } from "primereact/button";
 import { TieredMenu } from "primereact/tieredmenu";
 
+/* -------------------------------------------------------------------------- */
+/*                                  HELPERS                                   */
+/* -------------------------------------------------------------------------- */
+
+const isNavigable = (item) => Boolean(item.path) && item.path !== "#";
+
+/** Readable items in display order. */
+const visibleItems = (items = []) =>
+  items
+    .filter((item) => item.read)
+    .sort((a, b) => a.orderByExpression - b.orderByExpression);
+
+/** Active when its path is in the URL, or any descendant's is. */
+const isItemActive = (item, pathname) => {
+  if (isNavigable(item) && pathname.includes(item.path)) return true;
+
+  return item.items?.length
+    ? item.items.some((child) => isItemActive(child, pathname))
+    : false;
+};
+
+const MenuItemTemplate = (item, options) => (
+  <div
+    onClick={options.onClick}
+    className={`flex items-center justify-between px-3 py-2 rounded-md cursor-pointer transition-all duration-150 ${
+      item.active
+        ? "bg-sky-100 text-sky-700 font-semibold"
+        : "text-(--color-fontFour) hover:bg-(--color-bgTwo)"
+    }`}
+  >
+    <div className="flex items-center gap-2">
+      {item.icon && <span className={item.icon} />}
+      <span>{item.label}</span>
+    </div>
+
+    {item.items?.length > 0 && <span className="pi pi-angle-right text-xs" />}
+  </div>
+);
+
+const buttonPt = (isActive) => ({
+  root: {
+    className: `uppercase! px-2! py-1! border-none! shadow-none! rounded-md! transition-all duration-200 ${
+      isActive
+        ? "bg-(--color-fontFive)! text-(--color-bgThree)! font-semibold!"
+        : "text-(--color-fontFour)! hover:bg-(--color-bgTwo)!"
+    }`,
+  },
+  label: { className: "text-inherit!" },
+  icon: { className: "text-inherit!" },
+});
+
+const TIERED_MENU_PT = {
+  root: {
+    className:
+      "border border-(--color-borderOne)! rounded-lg! shadow-lg! overflow-hidden!",
+  },
+  menu: { className: "p-1!" },
+};
+
+/* -------------------------------------------------------------------------- */
+/*                                 COMPONENT                                  */
+/* -------------------------------------------------------------------------- */
+
+/** Record-level actions ("Right Tab Menu") shown on record pages. */
 const ExtraTabMenu = ({ fullPath, dataMenu }) => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const { pathname, search } = useLocation();
 
-  const menuRefs = useRef([]);
+  const menuRefs = useRef(new Map());
 
-  const queryParams = new URLSearchParams(location.search);
-  const entityId = queryParams.get("id");
+  const entityId = useMemo(
+    () => new URLSearchParams(search).get("id"),
+    [search],
+  );
 
-  /* ---------------- ACTIVE CHECK ---------------- */
-  const isItemActive = (item) => {
-    // self active
-    if (
-      item.path &&
-      item.path !== "#" &&
-      location.pathname.includes(item.path)
-    ) {
-      return true;
-    }
+  const handleNavigate = useCallback(
+    (item) => {
+      if (!isNavigable(item)) return;
 
-    // child active
-    if (item.items?.length) {
-      return item.items.some(isItemActive);
-    }
+      navigate(`${fullPath}${item.path}${entityId ? `?id=${entityId}` : ""}`);
+    },
+    [navigate, fullPath, entityId],
+  );
 
-    return false;
-  };
+  const actions = useMemo(() => visibleItems(dataMenu), [dataMenu]);
 
-  /* ---------------- NAVIGATE ---------------- */
-  const handleNavigate = (item) => {
-    if (!item.path || item.path === "#") return;
-
-    navigate(
-      `${fullPath}${item.path}${entityId ? `?id=${entityId}` : ""}`,
-    );
-  };
-
-  /* ---------------- TEMPLATE ---------------- */
-  const itemTemplate = (item, options) => {
-    return (
-      <div
-        onClick={options.onClick}
-        className={`
-          flex items-center justify-between
-          px-3 py-2 rounded-md cursor-pointer
-          transition-all duration-150
-
-          ${
-            item.active
-              ? `
-                bg-sky-100
-                text-sky-700
-                font-semibold
-              `
-              : `
-                text-(--color-fontFour)
-                hover:bg-(--color-bgTwo)
-              `
-          }
-        `}
-      >
-        <div className="flex items-center gap-2">
-          {item.icon && <span className={item.icon} />}
-          <span>{item.label}</span>
-        </div>
-
-        {item.items?.length > 0 && (
-          <span className="pi pi-angle-right text-xs" />
-        )}
-      </div>
-    );
-  };
-
-  /* ---------------- BUILD MENU ---------------- */
-  const buildMenuModel = (items = []) => {
-    return items
-      .filter((item) => item.read)
-      .sort((a, b) => a.orderByExpression - b.orderByExpression)
-      .map((item) => ({
+  const menuModels = useMemo(() => {
+    const toModel = (items) =>
+      visibleItems(items).map((item) => ({
         label: item.label,
-
         icon:
           item.icon ||
-          (item.items?.length
-            ? "pi pi-folder-open"
-            : "pi pi-folder"),
-
-        active: isItemActive(item),
-
+          (item.items?.length ? "pi pi-folder-open" : "pi pi-folder"),
+        active: isItemActive(item, pathname),
         command:
           !item.items?.length && item.path !== "#"
             ? () => handleNavigate(item)
             : undefined,
-
-        items: item.items?.length
-          ? buildMenuModel(item.items)
-          : undefined,
-
-        template: itemTemplate,
+        items: item.items?.length ? toModel(item.items) : undefined,
+        template: MenuItemTemplate,
       }));
+
+    return new Map(
+      actions
+        .filter((item) => item.items?.length)
+        .map((item) => [item.id, toModel(item.items)]),
+    );
+  }, [actions, pathname, handleNavigate]);
+
+  const getMenuRef = (id) => {
+    if (!menuRefs.current.has(id)) menuRefs.current.set(id, createRef());
+
+    return menuRefs.current.get(id);
   };
-
-  /* ---------------- TOP LEVEL ---------------- */
-  const actions = useMemo(() => {
-    if (!dataMenu?.length) return [];
-
-    return dataMenu
-      .filter((item) => item.read)
-      .sort((a, b) => a.orderByExpression - b.orderByExpression);
-  }, [dataMenu]);
-
-  /* ---------------- MENU MODELS ---------------- */
-  const menuModels = useMemo(() => {
-    const map = new Map();
-
-    actions.forEach((item) => {
-      if (item.items?.length) {
-        map.set(item.id, buildMenuModel(item.items));
-      }
-    });
-
-    return map;
-  }, [actions, location.pathname]);
 
   return (
     <div className="flex gap-2 items-center flex-wrap">
-      {actions.map((item, index) => {
-        if (!menuRefs.current[index]) {
-          menuRefs.current[index] = createRef();
-        }
-
+      {actions.map((item) => {
         const hasChildren = item.items?.length > 0;
-
-        const isActive = isItemActive(item);
+        const menuRef = getMenuRef(item.id);
 
         return (
           <div key={item.id}>
-            {/* ---------------- TOP BUTTON ---------------- */}
             <Button
               label={item.label}
               icon={hasChildren ? "pi pi-angle-down" : item.icon}
               iconPos="right"
               text
-              onClick={(e) => {
-                if (hasChildren) {
-                  menuRefs.current[index]?.current?.toggle(e);
-                } else {
-                  handleNavigate(item);
-                }
-              }}
-              pt={{
-                root: {
-                  className: `
-                    uppercase!
-                    px-2!
-                    py-1!
-                    border-none!
-                    shadow-none!
-                    rounded-md!
-                    transition-all
-                    duration-200
-
-                    ${
-                      isActive
-                        ? `
-                          bg-(--color-fontFive)!
-                          text-(--color-bgThree)!
-                          font-semibold!
-                        `
-                        : `
-                          text-(--color-fontFour)!
-                          hover:bg-(--color-bgTwo)!
-                        `
-                    }
-                  `,
-                },
-
-                label: {
-                  className: "text-inherit!",
-                },
-
-                icon: {
-                  className: "text-inherit!",
-                },
-              }}
+              onClick={(e) =>
+                hasChildren ? menuRef.current?.toggle(e) : handleNavigate(item)
+              }
+              pt={buttonPt(isItemActive(item, pathname))}
             />
 
-            {/* ---------------- TIERED MENU ---------------- */}
             {hasChildren && (
               <TieredMenu
                 popup
-                ref={menuRefs.current[index]}
+                ref={menuRef}
                 model={menuModels.get(item.id)}
                 breakpoint="767px"
-                pt={{
-                  root: {
-                    className:
-                      "border border-(--color-borderOne)! rounded-lg! shadow-lg! overflow-hidden!",
-                  },
-
-                  menu: {
-                    className: "p-1!",
-                  },
-                }}
+                pt={TIERED_MENU_PT}
               />
             )}
           </div>

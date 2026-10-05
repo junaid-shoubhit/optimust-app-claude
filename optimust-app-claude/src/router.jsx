@@ -5,66 +5,117 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import PublicRoute from "./auth/PublicRoute.jsx";
 import FormManager from "./components/FormManager/FormManager.jsx";
 
+/*
+ * Route-level code splitting with preloading. Each lazy page's chunk is only
+ * fetched the first time it renders, which made the first visit to a page sit
+ * on the "Loading workspace..." fallback while it downloaded. preloadRoutes()
+ * fetches them in the background after login so navigation doesn't wait.
+ */
+const routeLoaders = [];
+
+const lazyRoute = (factory) => {
+  routeLoaders.push(factory);
+
+  return lazy(factory);
+};
+
+const whenIdle = (callback) =>
+  typeof window.requestIdleCallback === "function"
+    ? window.requestIdleCallback(callback, { timeout: 3000 })
+    : window.setTimeout(callback, 300);
+
+let routesPreloaded = false;
+
+/** Downloads every route chunk, one at a time, in idle periods. Idempotent. */
+export const preloadRoutes = () => {
+  if (routesPreloaded) return;
+
+  routesPreloaded = true;
+
+  const queue = [...routeLoaders];
+
+  const next = () => {
+    const load = queue.shift();
+
+    if (!load) return;
+
+    // A failed preload is harmless: the route loads normally when visited.
+    load()
+      .catch(() => {})
+      .finally(() => whenIdle(next));
+  };
+
+  whenIdle(next);
+};
+
 // Lazy load layouts and pages
-const LazyMainLayout = lazy(() => import("./layouts/main/MainLayout"));
-const LazyAuthLayout = lazy(() => import("./layouts/auth/AuthLayout"));
-const LazyDashboard = lazy(() => import("./pages/Home/Dashboard/Dashboard"));
-const LazyDynamicPage = lazy(
+const LazyMainLayout = lazyRoute(() => import("./layouts/main/MainLayout"));
+const LazyAuthLayout = lazyRoute(() => import("./layouts/auth/AuthLayout"));
+const LazyDashboard = lazyRoute(
+  () => import("./pages/Home/Dashboard/Dashboard"),
+);
+const LazyDynamicPage = lazyRoute(
   () => import("./pages/DynamicContent/DynamicPage/DynamicPage.jsx"),
 );
 
-const LazyDocumentManager = lazy(
+const LazyDocumentManager = lazyRoute(
   () => import("./pages/DocumentManager/Documents/Document.jsx"),
 );
-const LazyTemplatesEditor = lazy(
+const LazyTemplatesEditor = lazyRoute(
   () => import("./pages/DocumentManager/Templates/TemplateEditor.jsx"),
 );
-const LazyTemplates = lazy(
+const LazyTemplates = lazyRoute(
   () => import("./pages/DocumentManager/Templates/Templates.jsx"),
 );
-const LazyLogin = lazy(() => import("./pages/Login/Login.jsx"));
-const LazyResetPassword = lazy(() => import("./pages/Login/ResetPassword.jsx"));
+const LazyLogin = lazyRoute(() => import("./pages/Login/Login.jsx"));
+const LazyResetPassword = lazyRoute(
+  () => import("./pages/Login/ResetPassword.jsx"),
+);
 
-const LazyWorkflow = lazy(() => import("./pages/Studio/Workflow/Workflow.jsx"));
+const LazyWorkflow = lazyRoute(
+  () => import("./pages/Studio/Workflow/Workflow.jsx"),
+);
 
-const LazyPdfEsign = lazy(() => import("./pages/Tools/PdfEsign/PdfEsign.jsx"));
+const LazyPdfEsign = lazyRoute(
+  () => import("./pages/Tools/PdfEsign/PdfEsign.jsx"),
+);
 
-const LazyBulkMessaging = lazy(
+const LazyBulkMessaging = lazyRoute(
   () => import("./pages/Tools/BulkMessaging/BulkMessaging.jsx"),
 );
 
-const LazyReports = lazy(() => import("./pages/Reports/Reports.jsx"));
+const LazyReports = lazyRoute(() => import("./pages/Reports/Reports.jsx"));
 
-const LazyCalendar = lazy(
+const LazyCalendar = lazyRoute(
   () => import("./pages/Managements/Calendar/Calendar.jsx"),
 );
 
-const LazyWFTasks = lazy(
+const LazyWFTasks = lazyRoute(
   () => import("./pages/Managements/WFTasks/WFTasks.jsx"),
 );
 
-const LazyUsersGroupModulePermission = lazy(
+const LazyUsersGroupModulePermission = lazyRoute(
   () =>
     import("./pages/Admin/Permissions/UsersGroupModulePermission/UsersGroupModulePermission.jsx"),
 );
 
-const LazyDynamicFieldsMapping = lazy(
+const LazyDynamicFieldsMapping = lazyRoute(
   () => import("./pages/Admin/DynamicFieldsMapping/DynamicFieldsMapping.jsx"),
 );
-const LazyCalendarEventsMassAssignment = lazy(
+const LazyCalendarEventsMassAssignment = lazyRoute(
   () =>
     import("./pages/Tools/CalendarEventsMassAssignment/CalendarEventsMassAssignment.jsx"),
 );
 
-const LazyUserProfile = lazy(
+const LazyUserProfile = lazyRoute(
   () => import("./pages/UserProfile/UserProfile.jsx"),
 );
 
-const LazyWorkflowView = lazy(
+const LazyWorkflowView = lazyRoute(
   () => import("./pages/Studio/Workflow/WorkflowDetails/WorkFlowView.jsx"),
 );
 
-const LazyDocumentSiging = lazy(
+const LazyDocumentSiging = lazyRoute(
   () => import("./pages/DocumentSiging/DocumentSiging.jsx"),
 );
 export const router = createBrowserRouter(

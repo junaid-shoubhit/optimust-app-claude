@@ -12,7 +12,7 @@ import { capitalize } from "../../../utils/constant";
 import { useTableFiltersQuery } from "../../DynamicContent/DynamicPage/useDynamicPageQuery";
 
 import WorkFlowForm from "./WorkFlowModalForm/WorkFlowForm";
-import { useCustomNavigation } from "../../../layouts/main/Navbar/NavigationContext";
+import { useAppNavigation } from "../../../navigation/NavigationContext";
 
 const defaultFilters = {
   page: 1,
@@ -20,7 +20,7 @@ const defaultFilters = {
 };
 
 const WorkFlow = () => {
-  const { activeMenu } = useCustomNavigation();
+  const { activeMenu } = useAppNavigation();
 
   const { workflowSlug, formManager } = useParams();
 

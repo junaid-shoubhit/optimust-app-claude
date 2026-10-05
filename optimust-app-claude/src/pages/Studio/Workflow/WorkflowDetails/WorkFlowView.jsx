@@ -8,13 +8,13 @@ import WorkFlowForm from "../WorkFlowModalForm/WorkFlowForm";
 import WorkFlowFields from "./WorkFlowFields/WorkFlowFields";
 import { capitalize } from "../../../../utils/constant";
 import EntityList from "../../../../components/Common/KeyValueList/EntityList";
-import { useCustomNavigation } from "../../../../layouts/main/Navbar/NavigationContext";
+import { useAppNavigation } from "../../../../navigation/NavigationContext";
 
 const WorkFlowView = () => {
   const { search } = useLocation();
   const { workflowSlug } = useParams();
   const [visible, setVisible] = useState(false);
-  const { activeMenu } = useCustomNavigation();
+  const { activeMenu } = useAppNavigation();
   /* ---------------- Parse Slug ---------------- */
 
   const { workflowType, workflowTypeId, workflowTypeKey } = useMemo(() => {

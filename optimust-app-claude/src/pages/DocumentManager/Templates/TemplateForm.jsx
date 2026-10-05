@@ -15,7 +15,7 @@ import { titleMap } from "../../../utils/constant";
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker?url";
 import mammoth from "mammoth";
-import { useCustomNavigation } from "../../../layouts/main/Navbar/NavigationContext";
+import { useAppNavigation } from "../../../navigation/NavigationContext";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
@@ -31,7 +31,7 @@ const TemplateForm = ({
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { parseFile } = useFileParser();
-  const { activeMenu } = useCustomNavigation();
+  const { activeMenu } = useAppNavigation();
   const formatTemplatePayload = (values) => {
     return {
       ...values,

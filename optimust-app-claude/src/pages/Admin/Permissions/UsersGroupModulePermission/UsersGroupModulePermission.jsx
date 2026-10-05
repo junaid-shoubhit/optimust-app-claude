@@ -9,7 +9,7 @@ import SelectField from "../../../../components/Forms/Select/Select";
 import CustomButton from "../../../../components/Forms/Buttons/CustomButton";
 
 import Input from "../../../../components/Forms/Input/Input";
-import { useCustomNavigation } from "../../../../layouts/main/Navbar/NavigationContext";
+import { useAppNavigation } from "../../../../navigation/NavigationContext";
 const UsersGroupModulePermission = () => {
   const queryClient = useQueryClient();
 
@@ -18,7 +18,7 @@ const UsersGroupModulePermission = () => {
   const [expanded, setExpanded] = useState({});
   const [activeRootIndex, setActiveRootIndex] = useState([]);
   const [searchExpanded, setSearchExpanded] = useState({});
-  const { activeMenu } = useCustomNavigation();
+  const { activeMenu } = useAppNavigation();
 
   const [search, setSearch] = useState("");
   // 1. Fetch User Groups for dropdown

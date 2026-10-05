@@ -11,7 +11,7 @@ import classNames from "classnames";
 import Table from "../../../components/Table/Table";
 import { apiRequest } from "../../../services/apiBinding";
 import CustomButton from "../../../components/Forms/Buttons/CustomButton";
-import { useCustomNavigation } from "../../../layouts/main/Navbar/NavigationContext";
+import { useAppNavigation } from "../../../navigation/NavigationContext";
 import { useTableFiltersQuery } from "../../DynamicContent/DynamicPage/useDynamicPageQuery";
 const defaultFilters = {
   page: 1,
@@ -49,7 +49,7 @@ const Templates = () => {
   const type = searchParams.get("type") || "templates";
 
   const navigate = useNavigate();
-  const { activeMenu } = useCustomNavigation();
+  const { activeMenu } = useAppNavigation();
   console.log("activeMenu", activeMenu);
   const isDraft = type === "draft" ? 1 : 0;
 

@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-// import { optimustURL } from "../../services/apiBinding";
 import { ENDPOINTS } from "../../utils/APIEndpoints";
 import { optimustURL } from "../../utils/lib/axiosPrivate";
 
 export const useFirmSwitch = ({
+  tokenKey = "firm-token",
   showSuccessToast = true,
   showErrorToast = true,
   onSuccess,
@@ -12,8 +12,10 @@ export const useFirmSwitch = ({
 } = {}) => {
   return useMutation({
     mutationFn: async ({ firm, userName }) => {
-      const token = localStorage.getItem("firm-token");
-      console.log("token", token);
+      const token = localStorage.getItem(tokenKey);
+
+      console.log("Firm switch token:", tokenKey, token);
+
       const { data: response } = await optimustURL.post(
         ENDPOINTS.FIRM_CHANGE,
         {
@@ -36,9 +38,7 @@ export const useFirmSwitch = ({
     onSuccess: ({ response, firm, userName }) => {
       localStorage.setItem("token", response.token);
       localStorage.setItem("email", response.email);
-
       localStorage.setItem("userName", response?.userName || userName);
-
       localStorage.setItem("selected-firm", JSON.stringify(firm));
 
       if (showSuccessToast) {

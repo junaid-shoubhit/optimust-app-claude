@@ -5,6 +5,7 @@ import CaseStatusCount from "./CaseStatusCount";
 import IntakeStatusCount from "./IntakeStatusCount";
 import EventStatusChart from "./EventStatusChart";
 import GetTodayTasksReport from "./GetTodayTasksReport";
+import SettledCasesSummary from "./SettledCasesSummary";
 
 import { apiRequest } from "../../../services/apiBinding";
 
@@ -63,11 +64,14 @@ const Dashboard = () => {
       </div>
 
       {/* MAIN GRID */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
         <EventStatusChart />
 
         <GetTodayTasksReport />
       </div>
+
+      {/* SETTLEMENTS */}
+      <SettledCasesSummary />
     </div>
   );
 };

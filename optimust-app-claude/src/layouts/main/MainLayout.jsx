@@ -2,13 +2,12 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "./Navbar/Sidebar";
 import "./layout.css";
 import TabMenus from "./Navbar/TabMenus";
-import { Suspense } from "react";
-import {
-  NavigationProvider,
-  useCustomNavigation,
-} from "./Navbar/NavigationContext";
+import { Suspense, useEffect } from "react";
+import NavigationProvider from "../../navigation/NavigationProvider";
+import { useAppNavigation } from "../../navigation/NavigationContext";
 import { ConfirmPopup } from "primereact/confirmpopup";
 import { ConfirmDialog } from "primereact/confirmdialog";
+import { preloadRoutes } from "../../router";
 
 const WorkspaceLoader = () => (
   <div className="flex items-center justify-center h-full">
@@ -20,7 +19,7 @@ const WorkspaceLoader = () => (
 );
 
 const LayoutBody = () => {
-  const { navReady } = useCustomNavigation();
+  const { isReady } = useAppNavigation();
 
   return (
     <div className="flex flex-col h-[calc(100vh)] overflow-hidden">
@@ -40,7 +39,7 @@ const LayoutBody = () => {
 
           {/* PAGE CONTENT */}
           <div className="flex-1 overflow-y-auto overflow-x-hidden">
-            {!navReady ? (
+            {!isReady ? (
               <WorkspaceLoader />
             ) : (
               <Suspense fallback={<WorkspaceLoader />}>
@@ -55,6 +54,12 @@ const LayoutBody = () => {
 };
 
 const MainLayout = () => {
+  // Warm every page's code in the background so moving between pages never
+  // waits on a chunk download.
+  useEffect(() => {
+    preloadRoutes();
+  }, []);
+
   return (
     <div className="grid h-screen">
       <NavigationProvider>

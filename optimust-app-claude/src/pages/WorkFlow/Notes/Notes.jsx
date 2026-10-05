@@ -10,7 +10,7 @@ import DeleteButton from "../../../components/Forms/Buttons/DeleteButton";
 import { Pencil } from "lucide-react";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { getId } from "../../../utils/constants/formConstants";
-import { useCustomNavigation } from "../../../layouts/main/Navbar/NavigationContext";
+import { useAppNavigation } from "../../../navigation/NavigationContext";
 // ─── Payloads ─────────────────────────────────────────────────────────────────
 
 const createPayload = (dataTable, dataField = "name") => ({
@@ -223,7 +223,7 @@ const NoteCard = memo(({ note, onEdit, invalidateKeys, entityCode }) => {
 const Notes = () => {
   const addNoteOp = useRef(null);
   const queryClient = useQueryClient();
-  const { activeMenu } = useCustomNavigation();
+  const { activeMenu } = useAppNavigation();
   const { entityCodeId, entityCode } = activeMenu;
   const params = new URLSearchParams(window.location.search);
   const idParam = params.get("id");

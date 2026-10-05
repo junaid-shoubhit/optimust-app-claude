@@ -7,7 +7,7 @@ import {
   useDynamicPageQuery,
   useTableFiltersQuery,
 } from "../../DynamicContent/DynamicPage/useDynamicPageQuery";
-import { useCustomNavigation } from "../../../layouts/main/Navbar/NavigationContext";
+import { useAppNavigation } from "../../../navigation/NavigationContext";
 
 import { DEFAULT_FILTERS } from "./wfConstants";
 import { getWFTasksFields } from "./wfFields";
@@ -40,7 +40,7 @@ const getTaskId = (data) =>
 ============================================================ */
 
 const WFTasks = ({ entityId, activeMenu: propActiveMenu }) => {
-  const { activeMenu: contextActiveMenu } = useCustomNavigation();
+  const { activeMenu: contextActiveMenu } = useAppNavigation();
 
   const activeMenu = propActiveMenu ?? contextActiveMenu;
 

@@ -4,11 +4,11 @@ import { apiRequest } from "../../../services/apiBinding";
 import TemplateForm from "./TemplateForm";
 import { useMemo } from "react";
 import TemplateSkeleton from "./TemplateSkeleton";
-import { useCustomNavigation } from "../../../layouts/main/Navbar/NavigationContext";
+import { useAppNavigation } from "../../../navigation/NavigationContext";
 
 export default function TemplateEdit() {
   const [searchParams] = useSearchParams();
-  const { activeMenu } = useCustomNavigation();
+  const { activeMenu } = useAppNavigation();
   const location = useLocation();
   const id = searchParams.get("id");
   const versionId = searchParams.get("versionId");

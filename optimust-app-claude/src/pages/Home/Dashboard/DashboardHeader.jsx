@@ -8,6 +8,7 @@ const DASHBOARD_QUERY_KEYS = [
   ["intake-status-count"],
   ["calendar-events"],
   ["today-tasks-report"],
+  ["settled-cases-settled-collected-amount"],
 ];
 
 const isDashboardQuery = (query) =>

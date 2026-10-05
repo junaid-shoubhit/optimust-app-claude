@@ -12,7 +12,7 @@ import { createPayload } from "../../../../utils/constants/formConstants";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "../../../../services/apiBinding";
 import CaseFolderSelect from "./CaseFolderSelect";
-import { useCustomNavigation } from "../../../../layouts/main/Navbar/NavigationContext";
+import { useAppNavigation } from "../../../../navigation/NavigationContext";
 const ESignSendForm = ({ setVisible, files, coordinates }) => {
   const [saveToCase, setSaveToCase] = useState(false);
   /* ------------------ DEFAULT VALUES ------------------ */
@@ -46,7 +46,7 @@ const ESignSendForm = ({ setVisible, files, coordinates }) => {
   );
   const firmPayload = useMemo(() => createPayload("frmFirms_Basic"), []);
   const casePayload = useMemo(() => createPayload("ctCaseNo"), []);
-  const { activeMenu } = useCustomNavigation();
+  const { activeMenu } = useAppNavigation();
 
   /* ------------------ FORM FIELDS CONFIG ------------------ */
   const formFields = useMemo(

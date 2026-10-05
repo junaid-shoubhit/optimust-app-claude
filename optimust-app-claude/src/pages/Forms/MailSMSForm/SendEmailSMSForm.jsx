@@ -45,7 +45,7 @@ const SendEmailSMSForm = forwardRef(function SendEmailSMSForm(
   const [activeType, setActiveType] = useState("mail");
   const [isViewingCaseDocument, setIsViewingCaseDocument] = useState(false);
 
-  // const { activeMenu } = useCustomNavigation();
+  // const { activeMenu } = useAppNavigation();
 
   const email = useMemo(() => localStorage.getItem("email"), []);
 
