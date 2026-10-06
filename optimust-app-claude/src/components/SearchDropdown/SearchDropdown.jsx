@@ -26,8 +26,7 @@ const SearchDropdown = ({
   iconPosition = "left",
   responseKey,
   secondLabelKey,
-
-  error,
+  loading = false,
 }) => {
   const containerRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -211,7 +210,15 @@ const SearchDropdown = ({
             </span>
           ))}
 
+          {loading && (
+            <span className="flex items-center gap-1 text-xs text-gray-500">
+              <i className="pi pi-spin pi-spinner text-xs" />
+              Loading...
+            </span>
+          )}
+
           <input
+            disabled={loading}
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
@@ -226,7 +233,7 @@ const SearchDropdown = ({
     text-sm
     placeholder:text-xs
   "
-            placeholder={selectedItems.length ? "" : placeholder}
+            placeholder={loading || selectedItems.length ? "" : placeholder}
           />
         </div>
       ) : (

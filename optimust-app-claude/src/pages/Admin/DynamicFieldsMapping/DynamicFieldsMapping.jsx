@@ -7,7 +7,7 @@ import CustomToggle from "../../../components/forms/CustomToggle/CustomToggle.js
 import CheckMarkButton from "../../../components/forms/Buttons/CheckMarkButton/CheckMarkButton.jsx";
 import CrossButton from "../../../components/forms/Buttons/CrossButton/CrossButton.jsx";
 import { Check, X, Pencil, ArrowRight, ArrowRightLeft } from "lucide-react";
-import { useCustomNavigation } from "../../../layouts/main/Navbar/NavigationContext.jsx";
+import { useAppNavigation } from "../../../navigation/NavigationContext";
 import { toast } from "react-toastify";
 // ─── Brand ────────────────────────────────────────────────────────────────
 const BRAND_COLOR = "#5b5fc7";
@@ -277,7 +277,7 @@ const MappingRow = memo(({ mapping, onEdit }) => {
 const DynamicFieldsMapping = () => {
   // const [mappings, setMappings] = useState(INITIAL_MAPPINGS_MOCK);
   // const isLoading = false; // remove once wired to useQuery's isLoading
-  const { activeMenu } = useCustomNavigation();
+  const { activeMenu } = useAppNavigation();
   console.log("Active menu in DynamicFieldsMapping:", activeMenu);
 
   const queryClient = useQueryClient();

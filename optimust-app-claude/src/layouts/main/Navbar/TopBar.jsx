@@ -3,16 +3,11 @@ import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import SearchDropdown from "../../../components/SearchDropdown/SearchDropdown";
-import { useCustomNavigation } from "./NavigationContext";
-import { useActiveModule } from "./useActiveModule";
-import { flushSync } from "react-dom";
 // import { Bell } from "lucide-react";
 
 const TopBar = () => {
   const navigate = useNavigate();
 
-  const { setActiveModule } = useCustomNavigation();
-  const { modules } = useActiveModule();
   return (
     <nav className="">
       <div className="flex gap-2 items-center">
@@ -45,15 +40,9 @@ const TopBar = () => {
 
             entityCodeId: 1,
           })}
-          onSelect={(item) => {
-            const casesModule = modules.find((m) => m.path === "/cases");
-
-            flushSync(() => {
-              setActiveModule(casesModule);
-            });
-
-            navigate(`/cases/tabs-dynamic/pi/overview?id=${item?.id}`);
-          }}
+          onSelect={(item) =>
+            navigate(`/cases/tabs-dynamic/pi/overview?id=${item?.id}`)
+          }
         />
 
         {/* <button

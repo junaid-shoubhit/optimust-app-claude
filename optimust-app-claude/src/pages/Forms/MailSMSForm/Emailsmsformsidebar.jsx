@@ -25,6 +25,7 @@ const EmailSmsFormSidebar = React.memo(
     isViewingCaseDocument,
     onToggleCaseDocument,
     setValue,
+    isPrefillingTo,
   }) => (
     <div className="lg:col-span-4 border-b lg:border-b-0 lg:border-r border-gray-100 bg-gray-50 overflow-y-auto">
       <div className="p-2 sm:p-3">
@@ -58,6 +59,7 @@ const EmailSmsFormSidebar = React.memo(
                   queryKey="mail-to-search"
                   payloadBuilder={mailRecipientPayloadBuilder}
                   required
+                  loading={isPrefillingTo}
                 />
 
                 <RecipientSearchDropdown

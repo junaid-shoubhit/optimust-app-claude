@@ -1,10 +1,10 @@
 import TabsNestedDynamicView from "./TabsNestedDynamicView";
 import DynamicContainer from "./DynamicContainer";
-import { useCustomNavigation } from "../../../layouts/main/Navbar/NavigationContext";
+import { useAppNavigation } from "../../../navigation/NavigationContext";
 import { useOutletContext, useParams } from "react-router-dom";
 
 const DynamicView = () => {
-  const { activeMenu, isLoading } = useCustomNavigation();
+  const { activeMenu, isTabsLoading: isLoading } = useAppNavigation();
   const { invalidateKeys } = useOutletContext();
   const { formManager } = useParams();
   if (activeMenu?.designType === "tabs-nested-dynamic") {

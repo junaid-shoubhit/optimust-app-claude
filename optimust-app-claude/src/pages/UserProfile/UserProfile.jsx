@@ -12,7 +12,7 @@ import DynamicFormFields from "../../components/Forms/DynamicForm/UserDynamicFor
 import { apiRequest } from "../../services/apiBinding";
 import Contacts from "../CaseParties/Contacts/Contacts";
 import { getId } from "../../utils/constants/formConstants";
-import { useActiveModule } from "../../layouts/main/Navbar/useActiveModule";
+import { useAppNavigation } from "../../navigation/NavigationContext";
 const createPayload = (dataTable, dataField = "name") => ({
   dataTable,
   dataField,
@@ -24,7 +24,7 @@ const PASSWORD_REGEX =
 
 const UserProfile = ({ currentModule }) => {
   const queryClient = useQueryClient();
-  const { activeModule } = useActiveModule();
+  const { activeModule } = useAppNavigation();
   console.log("activeModule", activeModule);
   /* ------------------ GET PROFILE ------------------ */
 

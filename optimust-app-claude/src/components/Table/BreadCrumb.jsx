@@ -1,8 +1,8 @@
 import React from "react";
-import { useNavigationData } from "../../layouts/main/Navbar/useNavigationData";
+import { useAppNavigation } from "../../navigation/NavigationContext";
 
 const BreadCrumb = () => {
-  const { breadcrumb } = useNavigationData();
+  const { breadcrumb } = useAppNavigation();
   return (
     <div className="flex gap-2 text-xs text-(--color-fontFour) font-medium">
       {breadcrumb.map((item, index) => (

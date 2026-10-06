@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { PATH } from "../../../utils/pagePath";
 import { useFirmSwitch } from "../../../pages/Login/useFirmSwitch";
-import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
 
 const SidebarProfile = ({ navigate, profileMenus, onProfileClick }) => {
@@ -31,16 +30,38 @@ const SidebarProfile = ({ navigate, profileMenus, onProfileClick }) => {
   }, []);
 
   const firmMutation = useFirmSwitch({
+    tokenKey: "token",
     onSuccess: async () => {
-      toast.success("Firm selected successfully!");
-      navigate("/", { replace: true });
-      await queryClient.invalidateQueries();
+      // Every cached response belongs to the previous firm
+      await queryClient.cancelQueries();
+
+      // Leave the current page first so its queries don't refetch
+      await navigate("/", { replace: true });
+
+      // Drop old-firm data (instead of showing it while refetching) and
+      // refetch only what the new page needs
+      await queryClient.resetQueries();
     },
 
     onError: () => {
       setSelectedTeam(activeFirm?.value);
     },
   });
+
+  const handleLogout = async () => {
+    // Stop in-flight requests so they don't repopulate the cache
+    await queryClient.cancelQueries();
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("SSID");
+    localStorage.removeItem("email");
+
+    setTimeout(() => {
+      navigate(PATH.LOGIN);
+      // Clear after unmounting the app pages so active queries don't refetch
+      queryClient.clear();
+    }, 500);
+  };
 
   const handleEnter = (menu) => {
     clearTimeout(timeoutRef.current);
@@ -235,15 +256,7 @@ const SidebarProfile = ({ navigate, profileMenus, onProfileClick }) => {
           <div className="h-px bg-gray-100 my-2" />
 
           <button
-            onClick={() => {
-              localStorage.removeItem("token");
-              localStorage.removeItem("SSID");
-              localStorage.removeItem("email");
-
-              setTimeout(() => {
-                navigate(PATH.LOGIN);
-              }, 500);
-            }}
+            onClick={handleLogout}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl
             hover:bg-red-50 text-red-500 text-sm"
           >

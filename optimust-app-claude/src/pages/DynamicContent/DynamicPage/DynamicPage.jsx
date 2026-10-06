@@ -22,7 +22,7 @@ import {
   defaultFilters,
 } from "./useDynamicPageQuery";
 import { useResizablePanel } from "./useResizablePanel";
-import { useCustomNavigation } from "../../../layouts/main/Navbar/NavigationContext.jsx";
+import { useAppNavigation } from "../../../navigation/NavigationContext";
 import { capitalize } from "../../../utils/constant.js";
 
 /* ================= MEMOIZED RENDERERS ================= */
@@ -806,7 +806,7 @@ const DynamicPageWithNavigation = () => {
 
   const isFormOpen = !!formManager;
 
-  const { activeMenu, isLoading: isMenuLoading } = useCustomNavigation();
+  const { activeMenu, isTabsLoading: isMenuLoading } = useAppNavigation();
 
   return (
     <DynamicPageContent

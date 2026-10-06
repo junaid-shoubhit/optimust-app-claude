@@ -6,7 +6,7 @@ import {
   ListTodo,
   ArrowUpRight,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useReportNavigation } from "../../../navigation/useReportPath";
 import TruncatedText from "../../../components/Common/KeyValueList/TruncatedText";
 import { ErrorState } from "./DashboardUI";
 
@@ -33,15 +33,9 @@ const CaseStatusCount = ({
   isError = false,
   onRetry,
 }) => {
-  const navigate = useNavigate();
+  const { openReport, prefetchReports } = useReportNavigation();
 
-  const handleReportClick = (report) => {
-    if (!report?.reportId) {
-      return;
-    }
-
-    navigate(`/reports/no-tabs/${report.reportId}`);
-  };
+  const handleReportClick = (report) => openReport(report?.reportId);
 
   const renderTiles = () => {
     if (isLoading) {
@@ -72,6 +66,7 @@ const CaseStatusCount = ({
           type="button"
           disabled={!isNavigable}
           onClick={() => handleReportClick(report)}
+          onMouseEnter={isNavigable ? prefetchReports : undefined}
           aria-label={`${report.reportName}: ${report.count ?? 0}${
             isNavigable ? ", open report" : ""
           }`}

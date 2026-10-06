@@ -5,13 +5,13 @@ import CustomButton from "../../../components/Forms/Buttons/CustomButton";
 import { apiRequest } from "../../../services/apiBinding";
 
 import SendEmailSMSForm from "./../../../pages/Forms/MailSMSForm/SendEmailSMSForm";
-import { useCustomNavigation } from "../../../layouts/main/Navbar/NavigationContext";
+import { useAppNavigation } from "../../../navigation/NavigationContext";
 const BulkMessaging = () => {
   const [caseNumbers, setCaseNumbers] = useState("");
   const [verifiedCases, setVerifiedCases] = useState([]);
   const [formValues, setFormValues] = useState({});
   const emailFormRef = useRef(null);
-  const { activeMenu } = useCustomNavigation();
+  const { activeMenu } = useAppNavigation();
 
   const verifyMutation = useMutation({
     mutationFn: async (payload) => {

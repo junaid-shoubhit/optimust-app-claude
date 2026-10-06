@@ -40,6 +40,7 @@ export const CardHeader = ({
   totalLabel,
   isLoading,
   viewAllTo,
+  viewAllLabel = "View all",
 }) => {
   return (
     <div className="flex items-start justify-between gap-4 mb-5">
@@ -69,7 +70,7 @@ export const CardHeader = ({
               className="inline-flex items-center gap-1 text-xs font-semibold mt-1.5 hover:underline focus-visible:outline-none focus-visible:underline"
               style={{ color: "var(--color-bgSeven)" }}
             >
-              View all
+              {viewAllLabel}
               <ArrowUpRight size={13} />
             </Link>
           )}

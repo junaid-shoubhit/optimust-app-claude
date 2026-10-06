@@ -20,7 +20,7 @@ import {
 } from "react-icons/md";
 import { v4 as uuidv4 } from "uuid";
 import { apiRequest } from "../../../services/apiBinding";
-import { useCustomNavigation } from "../../../layouts/main/Navbar/NavigationContext";
+import { useAppNavigation } from "../../../navigation/NavigationContext";
 import Dropzone from "./../../../components/Dropzone/Dropzone";
 import ESignTagSelector from "./ESignTagSelector";
 import ESignTag from "./ESignTag";
@@ -43,7 +43,7 @@ const PdfEsign = ({ isFromPdfEsign = true, caseData, entityId }) => {
   const [sendModalVisible, setSendModalVisible] = useState(false);
   const pageContainerRef = useRef(null);
 
-  const { activeMenu } = useCustomNavigation();
+  const { activeMenu } = useAppNavigation();
   const tagTypes = useMemo(
     () => [
       { value: "signature", name: "Signature", icon: <MdPerson size={28} /> },

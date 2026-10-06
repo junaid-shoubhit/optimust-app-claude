@@ -9,7 +9,7 @@ import DMDelete from "./DMActions/DMDelete";
 import DMRenderView from "./DMViews/DMRenderViews";
 import DMLoadingSkeleton from "./DMSkeleton";
 import { useDMSearch } from "./DMSidebar/DMSearch/useDMSearch";
-import { useCustomNavigation } from "../../../layouts/main/Navbar/NavigationContext";
+import { useAppNavigation } from "../../../navigation/NavigationContext";
 import { Skeleton } from "primereact/skeleton";
 import { MdAttachFile } from "react-icons/md";
 
@@ -27,7 +27,7 @@ const Document = ({
   handleAttachement,
   isConverted,
 }) => {
-  const { activeMenu } = useCustomNavigation();
+  const { activeMenu } = useAppNavigation();
   const isNested = !!propsEntityCodeId;
   const entityCodeId = propsEntityCodeId || activeMenu?.entityCodeId;
   const [allCaseFolders, setAllCaseFolders] = useState({});

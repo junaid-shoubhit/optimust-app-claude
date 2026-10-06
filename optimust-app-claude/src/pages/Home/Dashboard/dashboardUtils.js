@@ -16,6 +16,45 @@ export const STATUS_COLORS = [
 export const percentOf = (value, total) =>
   total > 0 ? Math.round((value / total) * 100) : 0;
 
+/**
+ * Percentage with precision that scales to its size, so small shares don't
+ * collapse to "0%": 0.0025 -> "<0.01%", 0.4 -> "0.4%", 37.25 -> "37.3%".
+ */
+export const formatPercent = (value) => {
+  if (!value) return "0%";
+
+  if (value < 0.01) return "<0.01%";
+
+  const digits = value < 1 ? 2 : 1;
+
+  return `${Number(value.toFixed(digits))}%`;
+};
+
+/* -------------------------------------------------------------------------- */
+/*                                  CURRENCY                                  */
+/* -------------------------------------------------------------------------- */
+
+const currencyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  maximumFractionDigits: 0,
+});
+
+const compactCurrencyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  notation: "compact",
+  maximumFractionDigits: 1,
+  trailingZeroDisplay: "stripIfInteger",
+});
+
+/** $36,366,013 */
+export const formatCurrency = (value) => currencyFormatter.format(value || 0);
+
+/** $36.4M — for axes and headline totals. */
+export const formatCompactCurrency = (value) =>
+  compactCurrencyFormatter.format(value || 0);
+
 /** Groups `items` by the value returned from `getStatus` into chart rows. */
 export const groupByStatus = (items, getStatus) => {
   const grouped = items.reduce((acc, item) => {

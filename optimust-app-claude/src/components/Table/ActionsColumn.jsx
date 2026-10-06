@@ -3,10 +3,21 @@ import CustomButton from "../Forms/Buttons/CustomButton";
 import DeleteButton from "../Forms/Buttons/DeleteButton";
 import EditButton from "../Forms/Buttons/EditButton";
 import { memo } from "react";
-const ActionsColumn = ({ actions, rowData, setSelectedRows }) => {
+import MailBtn from "../../pages/DynamicContent/DynamicView/components/Buttons/MailBtn";
+const ActionsColumn = ({ actions, rowData, setSelectedRows, isTaskMail }) => {
   const navigate = useNavigate();
   return (
     <div className="flex gap-1 w-full justify-end">
+      {isTaskMail && (
+        <MailBtn
+          rowDetails={{
+            subject: rowData?.[4379],
+            body: rowData?.[4384],
+            mailDetails: rowData?.[4382],
+          }}
+          noLabel={true}
+        />
+      )}
       {actions?.canEdit && (
         <EditButton rowData={rowData} onEdit={actions?.onEdit} />
       )}

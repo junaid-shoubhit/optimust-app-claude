@@ -406,6 +406,7 @@ const Login = () => {
   ========================================================= */
 
   const firmMutation = useFirmSwitch({
+    tokenKey: "firm-token",
     showSuccessToast: false,
     showErrorToast: false,
 

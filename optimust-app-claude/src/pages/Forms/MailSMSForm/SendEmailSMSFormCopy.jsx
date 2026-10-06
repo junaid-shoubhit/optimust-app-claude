@@ -26,7 +26,7 @@ import CustomButton from "../../../components/Forms/Buttons/CustomButton";
 import { apiRequest } from "../../../services/apiBinding";
 import { createPayload } from "../../../utils/constants/formConstants";
 import SearchDropdown from "../../../components/SearchDropdown/SearchDropdown";
-import { useCustomNavigation } from "../../../layouts/main/Navbar/NavigationContext";
+import { useAppNavigation } from "../../../navigation/NavigationContext";
 import { toast } from "react-toastify";
 
 /* -------------------------------------------------------------------------- */
@@ -201,7 +201,7 @@ const SendEmailSMSForm = forwardRef(function SendEmailSMSForm(
 
   const editorRef = useRef(null);
 
-  const { activeMenu } = useCustomNavigation();
+  const { activeMenu } = useAppNavigation();
 
   const email = useMemo(() => localStorage.getItem("email"), []);
 

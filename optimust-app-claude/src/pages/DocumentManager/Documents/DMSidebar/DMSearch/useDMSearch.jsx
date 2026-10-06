@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { apiRequest } from "../../../../../services/apiBinding";
 import { buildFolderTree1 } from "../../helper";
-import { useCustomNavigation } from "../../../../../layouts/main/Navbar/NavigationContext";
+import { useAppNavigation } from "../../../../../navigation/NavigationContext";
 
 export const useDMSearch = ({
   setAllCases,
@@ -15,7 +15,7 @@ export const useDMSearch = ({
 }) => {
   const [fileLoading, setFileLoading] = useState(false);
   const [folderLoading, setFolderLoading] = useState(false);
-  const { activeMenu } = useCustomNavigation();
+  const { activeMenu } = useAppNavigation();
 
   // NEW: backend DataSize
   const [caseTotalCount, setCaseTotalCount] = useState(0);

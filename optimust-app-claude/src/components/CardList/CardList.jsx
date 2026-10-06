@@ -75,6 +75,20 @@ const CardList = ({
     );
   }, [fieldsConfig]);
 
+  // Ordered for Excel export (renderColumns is keyed by numeric ids, which
+  // JavaScript sorts ascending).
+  const exportColumns = useMemo(
+    () =>
+      fieldsConfig
+        .filter((field) => field?.parameterName != null)
+        .map((field) => ({
+          ...field,
+          field: String(field.parameterName),
+          header: field.columnName,
+        })),
+    [fieldsConfig],
+  );
+
   /* ================= SYNC TOTAL ================= */
 
   useEffect(() => {
@@ -137,7 +151,7 @@ const CardList = ({
           quickFilters={quickFilters?.[cardType] || []}
           onQuickFilterChange={handleQuickFilterChange}
           setSelectedRows={setSelectedRows}
-          excelData={{ renderColumns, data }}
+          excelData={{ columns: exportColumns, renderColumns, data }}
           loading={isFiltersLoading}
         />
       </div>

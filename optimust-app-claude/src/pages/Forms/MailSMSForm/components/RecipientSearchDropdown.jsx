@@ -22,6 +22,7 @@ const RecipientSearchDropdown = React.memo(
     required = false,
     onChange,
     error,
+    loading = false,
   }) => {
     const rules = required
       ? {
@@ -56,6 +57,7 @@ const RecipientSearchDropdown = React.memo(
               placeholder={placeholder}
               label={label}
               payloadBuilder={payloadBuilder}
+              loading={loading}
               value={field.value || []}
               onSelect={(items) => {
                 field.onChange(items);

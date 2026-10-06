@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useReportNavigation } from "../../../navigation/useReportPath";
 import { useQuery } from "@tanstack/react-query";
 import {
   ArrowUpRight,
@@ -114,7 +114,7 @@ const PieTooltip = ({ active, payload, total }) => {
 /* -------------------------------------------------------------------------- */
 
 const IntakeStatusCount = ({ reports = [], isLoading: isReportsLoading }) => {
-  const navigate = useNavigate();
+  const { openReport, prefetchReports } = useReportNavigation();
 
   const [activeName, setActiveName] = useState(null);
 
@@ -198,11 +198,7 @@ const IntakeStatusCount = ({ reports = [], isLoading: isReportsLoading }) => {
   /*                            NAVIGATION                                    */
   /* ------------------------------------------------------------------------ */
 
-  const handleReportClick = (reportId) => {
-    if (!reportId) return;
-
-    navigate(`/reports/no-tabs/${reportId}`);
-  };
+  const handleReportClick = (reportId) => openReport(reportId);
 
   /* ------------------------------------------------------------------------ */
   /*                               DONUT                                      */
@@ -439,6 +435,7 @@ const IntakeStatusCount = ({ reports = [], isLoading: isReportsLoading }) => {
                       type="button"
                       disabled={!isNavigable}
                       onClick={() => handleReportClick(report.reportId)}
+                      onMouseEnter={isNavigable ? prefetchReports : undefined}
                       aria-label={`${report.reportName}: ${report.count ?? 0}${
                         isNavigable ? ", open report" : ""
                       }`}

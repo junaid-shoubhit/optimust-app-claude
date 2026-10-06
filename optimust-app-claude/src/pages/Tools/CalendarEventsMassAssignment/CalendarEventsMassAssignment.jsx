@@ -12,7 +12,7 @@ import CustomButton from "../../../components/Forms/Buttons/CustomButton";
 
 import { apiRequest } from "../../../services/apiBinding";
 import { createPayload } from "../../../utils/constants/formConstants";
-import { useCustomNavigation } from "../../../layouts/main/Navbar/NavigationContext";
+import { useAppNavigation } from "../../../navigation/NavigationContext";
 
 const defaultFilters = {
   page: 1,
@@ -23,7 +23,7 @@ const defaultFilters = {
 const CalendarEventsMassAssignment = () => {
   const params = useParams();
   const queryClient = useQueryClient();
-  const { activeMenu } = useCustomNavigation();
+  const { activeMenu } = useAppNavigation();
 
   const [totalCount, setTotalCount] = useState(0);
   const [visible, setVisible] = useState(false);

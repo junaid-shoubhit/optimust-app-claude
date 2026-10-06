@@ -9,32 +9,33 @@ import CellWrapper from "./CellWrapper";
 import SortableColumnHeader from "./Sorting/SortableColumnHeader";
 import { Skeleton } from "primereact/skeleton";
 import { DatabaseZap } from "lucide-react";
-import { formatColumnHeader, formatDateUI } from "../../utils/constant";
+import { formatColumnHeader } from "../../utils/constant";
+import { formatDateCell, formatYesNo, isCaseLinkColumn } from "./cellFormat";
 import { Link, useNavigate } from "react-router-dom";
 import useTableSorting from "./Sorting/useTableSorting";
 
 // --- Auto templates
+// Text comes from ./cellFormat, which the Excel export also uses, so an
+// exported sheet always matches what the table shows.
 const templates = {
   boolean: (value) => (
-    <span style={{ color: value ? "green" : "red" }}>
-      {value ? "Yes" : "No"}
-    </span>
+    <span style={{ color: value ? "green" : "red" }}>{formatYesNo(value)}</span>
   ),
-  date: (value, columnConfig) => {
-    if (!value) return "-";
-    const isUTC = columnConfig?.formatterId !== 6;
-    const formatted = formatDateUI(value, "date", isUTC);
-    return <CellWrapper>{formatted}</CellWrapper>;
-  },
-  datetime: (value, columnConfig) => {
-    if (!value) return "-";
-    const isUTC = columnConfig?.formatterId !== 6;
-    const formatted = formatDateUI(value, "datetime", isUTC);
-    return <CellWrapper>{formatted}</CellWrapper>;
-  },
-  checkbox: (value) => {
-    return Number(value) ? "Yes" : "No";
-  },
+  date: (value, columnConfig) =>
+    value ? (
+      <CellWrapper>{formatDateCell(value, columnConfig, "date")}</CellWrapper>
+    ) : (
+      "-"
+    ),
+  datetime: (value, columnConfig) =>
+    value ? (
+      <CellWrapper>
+        {formatDateCell(value, columnConfig, "datetime")}
+      </CellWrapper>
+    ) : (
+      "-"
+    ),
+  checkbox: (value) => formatYesNo(Number(value)),
   caselink: (value) => {
     if (!value) return "-";
 
@@ -181,6 +182,7 @@ const Table = ({
       return (
         <ActionsColumn
           rowData={rowData}
+          isTaskMail={rowData?.[5077] === "Task"}
           actions={actions}
           setSelectedRows={setSelectedRows}
         />
@@ -253,7 +255,7 @@ const Table = ({
          CUSTOM TEMPLATE
       ------------------------------------------------ */
 
-      if (["Case", "Case Number"].includes(columnConfig?.columnName)) {
+      if (isCaseLinkColumn(columnConfig)) {
         content = templates["caselink"](value);
       } else if (columnConfig?.customTemplate) {
         content = columnConfig.customTemplate(value, rowData);
@@ -474,6 +476,7 @@ const Table = ({
             setSelectedRows={setSelectedRows}
             loading={isFiltersLoading}
             excelData={{
+              columns: orderedColumns,
               renderColumns,
               data: tableData,
             }}
