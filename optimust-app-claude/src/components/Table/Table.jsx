@@ -10,11 +10,7 @@ import SortableColumnHeader from "./Sorting/SortableColumnHeader";
 import { Skeleton } from "primereact/skeleton";
 import { DatabaseZap } from "lucide-react";
 import { formatColumnHeader } from "../../utils/constant";
-import {
-  formatDateCell,
-  formatYesNo,
-  isCaseLinkColumn,
-} from "./cellFormat";
+import { formatDateCell, formatYesNo, isCaseLinkColumn } from "./cellFormat";
 import { Link, useNavigate } from "react-router-dom";
 import useTableSorting from "./Sorting/useTableSorting";
 
@@ -26,10 +22,16 @@ const templates = {
     <span style={{ color: value ? "green" : "red" }}>{formatYesNo(value)}</span>
   ),
   date: (value, columnConfig) =>
-    value ? <CellWrapper>{formatDateCell(value, columnConfig, "date")}</CellWrapper> : "-",
+    value ? (
+      <CellWrapper>{formatDateCell(value, columnConfig, "date")}</CellWrapper>
+    ) : (
+      "-"
+    ),
   datetime: (value, columnConfig) =>
     value ? (
-      <CellWrapper>{formatDateCell(value, columnConfig, "datetime")}</CellWrapper>
+      <CellWrapper>
+        {formatDateCell(value, columnConfig, "datetime")}
+      </CellWrapper>
     ) : (
       "-"
     ),
@@ -180,6 +182,7 @@ const Table = ({
       return (
         <ActionsColumn
           rowData={rowData}
+          isTaskMail={rowData?.[5077] === "Task"}
           actions={actions}
           setSelectedRows={setSelectedRows}
         />

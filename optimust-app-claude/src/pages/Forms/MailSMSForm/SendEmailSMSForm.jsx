@@ -67,6 +67,7 @@ const SendEmailSMSForm = forwardRef(function SendEmailSMSForm(
     selectedTemplate,
     templateId,
     watched,
+    isPrefillingTo,
   } = useEmailSmsForm({ details, activeType, onValuesChange });
 
   useDefaultCc(setValue, email);
@@ -262,7 +263,6 @@ const SendEmailSMSForm = forwardRef(function SendEmailSMSForm(
         fileName: document.fileName,
         BlobName: document.unc,
       }));
-      console.log("documents", documents);
       setValue("documents", documents, {
         shouldDirty: true,
         shouldTouch: true,
@@ -303,6 +303,7 @@ const SendEmailSMSForm = forwardRef(function SendEmailSMSForm(
                 isViewingCaseDocument={isViewingCaseDocument}
                 onToggleCaseDocument={handleToggleCaseDocument}
                 setValue={setValue}
+                isPrefillingTo={isPrefillingTo}
               />
 
               <div className="lg:col-span-8 h-full min-w-0 overflow-hidden">

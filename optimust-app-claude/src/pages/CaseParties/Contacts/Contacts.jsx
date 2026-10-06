@@ -281,7 +281,7 @@ const ContactDirectory = memo(({ activeMenu, entityId, isTabs, partyData }) => {
     queryKey: ["contacts", entityId],
     queryFn: ({ signal }) =>
       apiRequest({
-        apiPath: `/Contact/party/${entityId}`,
+        apiPath: `/Contact/${activeMenu?.entityCode}/${entityId}`,
         method: "get",
         signal,
       }),

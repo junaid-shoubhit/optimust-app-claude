@@ -3,18 +3,28 @@ import CustomButton from "../../../../../components/Forms/Buttons/CustomButton";
 import StepModal from "../../../../../components/Modal/StepModal/StepModal";
 import SendEmailSMSForm from "../../../../Forms/MailSMSForm/SendEmailSMSForm";
 
-const MailBtn = ({ entityId, caseData, activeMenu }) => {
+const MailBtn = ({
+  entityId,
+  caseData,
+  activeMenu,
+  noLabel,
+  rowDetails = {},
+}) => {
   const [visible, setVisible] = useState(false);
   return (
     <>
       <CustomButton
-        label={"Mail"}
+        label={noLabel ? null : "Mail"}
         icon={"pi pi-envelope"}
         iconPos={"left"}
         onClick={() => {
           setVisible(true);
         }}
-        className="p-button-sm primary"
+        className={
+          noLabel
+            ? "w-7.5! border-none! p-button-sm bg-(--background-secondary)! p-0!"
+            : "p-button-sm primary"
+        }
       />
 
       {visible && (
@@ -37,6 +47,7 @@ const MailBtn = ({ entityId, caseData, activeMenu }) => {
           details={{
             caseId: caseData,
             entityCodeId: activeMenu?.entityCodeId,
+            ...rowDetails,
           }}
         />
       )}

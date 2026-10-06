@@ -1,7 +1,9 @@
 import { useEffect, useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form";
+import { useQuery } from "@tanstack/react-query";
 
 import { DEFAULT_VALUES } from "../constants";
+import { getCascadeOptions } from "../../../../services/apiBinding";
 
 export function useEmailSmsForm({ details, activeType, onValuesChange }) {
   const formMethods = useForm({
@@ -11,7 +13,45 @@ export function useEmailSmsForm({ details, activeType, onValuesChange }) {
     },
   });
 
-  const { control, getValues } = formMethods;
+  const { control, getValues, setValue } = formMethods;
+
+  /* ----------------------- Prefill "to" from mailDetails ----------------------- */
+
+  const mailDetails = details?.mailDetails;
+
+  const { data: workflowEmails, isFetching: isPrefillingTo } = useQuery({
+    queryKey: ["workflowEmails", mailDetails],
+    queryFn: () =>
+      getCascadeOptions({
+        page: 1,
+        pageSize: 50,
+        dataTable: "Users_WorkFlowEmails",
+        dataField: "name",
+        searchTerm: mailDetails,
+      }),
+    enabled: Boolean(mailDetails),
+    // Drop the cache when the form closes so every open fetches fresh.
+    gcTime: 0,
+    staleTime: 0,
+  });
+
+  useEffect(() => {
+    const options = workflowEmails?.options;
+
+    if (!options?.length) {
+      return;
+    }
+
+    setValue(
+      "to",
+      options.map((option) => ({
+        value: option.value,
+        label: option.label,
+        address: option.address || option.label,
+      })),
+      { shouldDirty: true },
+    );
+  }, [workflowEmails, setValue]);
 
   const selectedTemplate = useWatch({ control, name: "template" });
 
@@ -105,6 +145,7 @@ export function useEmailSmsForm({ details, activeType, onValuesChange }) {
     selectedTemplate,
     templateId,
     watched,
+    isPrefillingTo,
   };
 }
 
